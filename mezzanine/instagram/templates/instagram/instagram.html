@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block main %}
+  {% for instagram in media %}
+  <img src="{{ instagram.images.thumbnail.url }}" width="{{ instagram.images.thumbnail.width }}" height="{{ instagram.images.thumbnail.height }}">
+  {% endfor %}
+{% endblock main %}
