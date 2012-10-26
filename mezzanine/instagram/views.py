@@ -1,17 +1,10 @@
-# from django.contrib.auth.decorators import user_passes_test
-# from django.core.urlresolvers import reverse
-# from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, RedirectView, DeleteView
+from instagram.client import InstagramAPI
 from mezzanine.conf import settings
 
-from instagram.client import InstagramAPI
-
 from .models import Instagram
-
-
-unauthorized_api = InstagramAPI(client_id=settings.INSTAGRAM_CLIENT_ID,
-                                client_secret=settings.INSTAGRAM_CLIENT_SECRET,
-                                redirect_uri="http://www.oola-sf.com/instagram/oauth/")
 
 
 class InstagramView(TemplateView):
@@ -31,6 +24,10 @@ class InstagramView(TemplateView):
 class InstagramOAuthView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         code = self.request.GET.get("code")
+        settings.use_editable()
+        unauthorized_api = InstagramAPI(client_id=settings.INSTAGRAM_CLIENT_ID,
+                                        client_secret=settings.INSTAGRAM_CLIENT_SECRET,
+                                        redirect_uri="http://www.oola-sf.com/instagram/oauth/")
         access_token = unauthorized_api.exchange_code_for_access_token(code)
         try:
             instagram = Instagram.objects.all()[0]
@@ -50,6 +47,7 @@ class InstagramOAuthView(RedirectView):
 class InstagramDeleteView(DeleteView):
     success_url = "/admin/"
 
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def get_object(self):
         try:
             return Instagram.objects.all()[0]
