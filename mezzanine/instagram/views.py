@@ -49,7 +49,7 @@ class InstagramDeleteView(DeleteView):
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def dispatch(self, *args, **kwargs):
-        super(InstagramDeleteView, self).dispatch(*args, **kwargs)
+        return super(InstagramDeleteView, self).dispatch(*args, **kwargs)
 
     def get_object(self):
         try:
