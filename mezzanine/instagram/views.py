@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.decorators import user_passes_test
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
@@ -6,6 +8,9 @@ from instagram.client import InstagramAPI
 from mezzanine.conf import settings
 
 from .models import Instagram
+
+
+logger = logging.getLogger(__name__)
 
 
 class InstagramView(TemplateView):
@@ -29,6 +34,7 @@ class InstagramOAuthView(RedirectView):
         unauthorized_api = InstagramAPI(client_id=settings.INSTAGRAM_CLIENT_ID,
                                         client_secret=settings.INSTAGRAM_CLIENT_SECRET,
                                         redirect_uri=reverse("instagram_oauth"))
+        logger.debug(unauthorized_api)
         access_token = unauthorized_api.exchange_code_for_access_token(code)
         try:
             instagram = Instagram.objects.all()[0]
