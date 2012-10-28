@@ -1,3 +1,4 @@
+from django.contrib.sites.models import Site
 from django.template import Library
 from instagram.client import InstagramAPI
 from mezzanine.conf import settings
@@ -17,9 +18,11 @@ def instagram(context):
     except IndexError:
         context['instagram'] = None
     settings.use_editable()
+    site = Site.objects.get_current()
     unauthorized_api = InstagramAPI(client_id=settings.INSTAGRAM_CLIENT_ID,
                                     client_secret=settings.INSTAGRAM_CLIENT_SECRET,
-                                    redirect_uri="http://www.oola-sf.com/instagram/oauth/")
+                                    redirect_uri="http://{0}/instagram/oauth/".format(
+                                        site.domain))
     context['authorize_url'] = unauthorized_api.get_authorize_url(
         scope=["basic", "likes", "comments", "relationships"])
     return context
