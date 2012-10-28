@@ -24,6 +24,7 @@ setup(name='Mezzanine_Instagram',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'python-instagram',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
