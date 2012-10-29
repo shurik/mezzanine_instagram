@@ -33,11 +33,13 @@ class InstagramOAuthView(RedirectView):
         code = self.request.GET.get("code")
         settings.use_editable()
         site = Site.objects.get_current()
-        unauthorized_api = InstagramAPI(client_id=settings.INSTAGRAM_CLIENT_ID,
-                                        client_secret=settings.INSTAGRAM_CLIENT_SECRET,
-                                        redirect_uri="http://{0}/instagram/oauth/".format(
-                                            site.domain))
-        # logger.debug(unauthorized_api)
+        conf = {
+            "redirect_uri": "http://{0}/instagram/oauth/".format(site.domain),
+            "client_id": settings.INSTAGRAM_CLIENT_ID,
+            "client_secret": settings.INSTAGRAM_CLIENT_SECRET,
+        }
+        unauthorized_api = InstagramAPI(**conf)
+        logger.debug(unauthorized_api)
         access_token = unauthorized_api.exchange_code_for_access_token(code)
         try:
             instagram = Instagram.objects.all()[0]
