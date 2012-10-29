@@ -37,7 +37,7 @@ class InstagramOAuthView(RedirectView):
                                         client_secret=settings.INSTAGRAM_CLIENT_SECRET,
                                         redirect_uri="http://{0}/instagram/oauth/".format(
                                             site.domain))
-        logger.debug(unauthorized_api)
+        # logger.debug(unauthorized_api)
         access_token = unauthorized_api.exchange_code_for_access_token(code)
         try:
             instagram = Instagram.objects.all()[0]
