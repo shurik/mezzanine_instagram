@@ -1,7 +1,8 @@
 import logging
 
 from django.contrib.auth.decorators import user_passes_test
-from django.core.urlresolvers import reverse
+# from django.core.urlresolvers import reverse
+from django.contrib.sites.models import Site
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, RedirectView, DeleteView
 from instagram.client import InstagramAPI
@@ -31,9 +32,11 @@ class InstagramOAuthView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         code = self.request.GET.get("code")
         settings.use_editable()
+        site = Site.objects.get_current()
         unauthorized_api = InstagramAPI(client_id=settings.INSTAGRAM_CLIENT_ID,
                                         client_secret=settings.INSTAGRAM_CLIENT_SECRET,
-                                        redirect_uri=reverse("instagram_oauth"))
+                                        redirect_uri="http://{0}/instagram/oauth/".format(
+                                            site.domain))
         logger.debug(unauthorized_api)
         access_token = unauthorized_api.exchange_code_for_access_token(code)
         try:
