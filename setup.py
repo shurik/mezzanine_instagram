@@ -25,6 +25,7 @@ setup(name='Mezzanine_Instagram',
       install_requires=[
           'setuptools',
           'python-instagram',
+          'django-braces',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

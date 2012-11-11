@@ -1,10 +1,10 @@
 import logging
 
+from braces.views import JSONResponseMixin, AjaxResponseMixin
 from django.contrib.auth.decorators import user_passes_test
-# from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, RedirectView, DeleteView
+from django.views.generic import TemplateView, RedirectView, DeleteView, View
 from instagram.client import InstagramAPI
 from mezzanine.conf import settings
 
@@ -68,3 +68,24 @@ class InstagramDeleteView(DeleteView):
             return Instagram.objects.all()[0]
         except IndexError:
             return None
+
+
+class InstagramAjaxView(JSONResponseMixin, AjaxResponseMixin, View):
+    """Instagram photos"""
+    def get_ajax(self, request, *args, **kwargs):
+        try:
+            instagram = Instagram.objects.all()[0]
+            api = InstagramAPI(access_token=instagram.access_token)
+            media, discard = api.user_recent_media(
+                user_id=instagram.user_id, count=24)
+            json_dict = {
+                "media": [{"url": n.images.get("thumbnail").url,
+                           "width": n.images.get("thumbnail").width,
+                           "height": n.images.get("thumbnail").height,
+                           } for n in media]
+                }
+        except IndexError:
+            json_dict = {
+                "media": []
+            }
+        return self.render_json_response(json_dict)
