@@ -79,10 +79,18 @@ class InstagramAjaxView(JSONResponseMixin, AjaxResponseMixin, View):
             media, discard = api.user_recent_media(
                 user_id=instagram.user_id, count=24)
             json_dict = {
-                "media": [{"url": n.images.get("thumbnail").url,
+                "thumbnails": [{"url": n.images.get("thumbnail").url,
                            "width": n.images.get("thumbnail").width,
                            "height": n.images.get("thumbnail").height,
-                           } for n in media]
+                           } for n in media],
+                "low_resolution": [{"url": n.images.get("low_resolution").url,
+                           "width": n.images.get("low_resolution").width,
+                           "height": n.images.get("low_resolution").height,
+                           } for n in media],
+                "standard_resolution": [{"url": n.images.get("standard_resolution").url,
+                           "width": n.images.get("standard_resolution").width,
+                           "height": n.images.get("standard_resolution").height,
+                           } for n in media],
                 }
         except IndexError:
             json_dict = {

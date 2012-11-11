@@ -6,3 +6,4 @@ Changelog
 
 * Initial release
 
+0.4 - AJAX View for use with a front-end template
