@@ -4,3 +4,4 @@ Releases
 ========
 
 0.1 Add numpy, scipy requirements
+0.6 Tweak requirements
