@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.5'
+version = '0.6'
 
 setup(name='Mezzanine_Instagram',
       version=version,
@@ -26,8 +26,6 @@ setup(name='Mezzanine_Instagram',
           'setuptools',
           'python-instagram',
           'django-braces',
-          'numpy',
-          'scipy',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
