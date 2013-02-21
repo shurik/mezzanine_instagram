@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.sites.models import Site
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, RedirectView, DeleteView, View
+from instagram import InstagramAPIError
 from instagram.client import InstagramAPI
 from mezzanine.conf import settings
 
@@ -21,8 +22,11 @@ class InstagramView(TemplateView):
         try:
             instagram = Instagram.objects.all()[0]
             api = InstagramAPI(access_token=instagram.access_token)
-            media, discard = api.user_recent_media(
-                user_id=instagram.user_id, count=24)
+            try:
+                media, discard = api.user_recent_media(user_id=instagram.user_id, count=24)
+            except InstagramAPIError, e:
+                logger.error(e)
+                return {"media": []}
             return {"media": media}
         except IndexError:
             return {"media": []}
