@@ -1,4 +1,5 @@
 from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 from django.template import Library
 from instagram.client import InstagramAPI
 from mezzanine.conf import settings
@@ -18,7 +19,7 @@ def instagram(context):
     settings.use_editable()
     site = Site.objects.get_current()
     conf = {
-        "redirect_uri": "http://{0}/instagram/oauth/".format(site.domain),
+        "redirect_uri": "http://{0}{1}".format(site.domain, reverse('instagram_oauth')),
         "client_id": settings.INSTAGRAM_CLIENT_ID,
         "client_secret": settings.INSTAGRAM_CLIENT_SECRET,
     }

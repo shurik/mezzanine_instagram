@@ -3,6 +3,7 @@ import logging
 from braces.views import JSONResponseMixin, AjaxResponseMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, RedirectView, DeleteView, View
 from instagram import InstagramAPIError
@@ -38,7 +39,7 @@ class InstagramOAuthView(RedirectView):
         settings.use_editable()
         site = Site.objects.get_current()
         conf = {
-            "redirect_uri": "http://{0}/instagram/oauth/".format(site.domain),
+            "redirect_uri": "http://{0}{1}".format(site.domain, reverse('instagram_oauth')),
             "client_id": settings.INSTAGRAM_CLIENT_ID,
             "client_secret": settings.INSTAGRAM_CLIENT_SECRET,
         }
