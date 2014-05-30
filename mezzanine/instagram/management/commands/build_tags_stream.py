@@ -1,7 +1,5 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.core.cache import cache
-from django.contrib.sites.models import Site
-from instagram import InstagramAPIError
 from instagram.client import InstagramAPI
 from mezzanine.instagram.models import Tag
 from mezzanine.conf import settings
@@ -12,7 +10,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         settings.use_editable()
-        site = Site.objects.get_current()
         api = InstagramAPI(client_id=settings.INSTAGRAM_CLIENT_ID,
             client_secret=settings.INSTAGRAM_CLIENT_SECRET)
 
