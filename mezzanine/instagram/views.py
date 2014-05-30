@@ -1,6 +1,7 @@
 import logging
 
 from braces.views import JSONResponseMixin, AjaxResponseMixin
+from django.core.cache import cache
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
@@ -10,7 +11,7 @@ from instagram import InstagramAPIError
 from instagram.client import InstagramAPI
 from mezzanine.conf import settings
 
-from .models import Instagram
+from .models import Instagram, Media
 
 
 logger = logging.getLogger(__name__)
@@ -31,6 +32,16 @@ class InstagramView(TemplateView):
             return {"media": media}
         except IndexError:
             return {"media": []}
+
+
+class InstagramTagsView(TemplateView):
+    template_name = "instagram/instagram.html"
+
+    def get_context_data(self, *args, **kwargs):
+        blocked = Media.objects.filter(allowed=False).values_list('media_id', flat=True)
+        media = [m for m in cache.get('INSTAGRAM_TAGS_STREAM')
+                    if m.id not in blocked]
+        return {"media": media, "blocked_media": blocked}
 
 
 class InstagramOAuthView(RedirectView):
