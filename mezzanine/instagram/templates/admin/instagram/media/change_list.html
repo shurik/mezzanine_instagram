@@ -1,0 +1,86 @@
+{% extends 'admin/change_list.html' %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+        .instagram-tags-legend {
+            background-color:#f7f7f7;
+            border:1px solid gray;
+            display:inline-block;
+            padding:10px 10px 10px 25px;
+        }
+        .information {
+            padding:10px;
+            font-weight:bold;
+        }
+        .instagram-tags-legend span.allowed {
+            border-left:20px solid green;
+            padding-left:5px;
+            margin-right:15px;
+        }
+        .instagram-tags-legend span.processing{
+            border-left:20px solid yellow;
+            padding-left:5px;
+            margin-right:15px;
+        }
+        .instagram-tags-legend span.blocked {
+            border-left:20px solid red;
+            padding-left:5px;
+            margin-right:15px;
+        }
+        .instagram-tags-stream a.allowed img {
+            border:3px solid green;
+        }
+        .instagram-tags-stream a.blocked img {
+            border:3px solid red;
+        }
+        .instagram-tags-stream a.processing img {
+            border:3px solid yellow;
+        }
+    </style>
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script>
+        $(document).ready(function(){
+            $('.instagram-tags-stream a').on('click', function(){
+                var url = "{% url 'admin:instagram-toggle-media' %}";
+                var id = $(this).data('id');
+
+                $('.instagram-tags-stream a[data-id='+id+']').removeClass('allowed');
+                $('.instagram-tags-stream a[data-id='+id+']').removeClass('blocked');
+                $('.instagram-tags-stream a[data-id='+id+']').addClass('processing');
+
+                $.post(url, {id: id}, function(result){
+                    $('.instagram-tags-stream a[data-id='+id+']').removeClass('processing');
+                    if(result == 'blocked') {
+                        $('.instagram-tags-stream a[data-id='+id+']').removeClass('allowed');
+                        $('.instagram-tags-stream a[data-id='+id+']').addClass('blocked');
+                    } else {
+                        $('.instagram-tags-stream a[data-id='+id+']').removeClass('blocked');
+                        $('.instagram-tags-stream a[data-id='+id+']').addClass('allowed');
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class='instagram-tags-legend'>
+        <span class='allowed'>Allowed</span>
+        <span class='processing'>Processing</span>
+        <span class='blocked'>Blocked</span>
+    </div>
+    <p class='information'>
+        Just click on image to change it's status from allowed to blocked and vice versa.
+    </p>
+    <div class='instagram-tags-stream'>
+        {% for m in instagram_tags_stream_items %}
+        <a href='#' data-id="{{ m.id }}" class="{% if m.id in instagram_blocked_media %}blocked{% else %}allowed{% endif %}">
+            <img src="{{ m.images.thumbnail.url }}" />
+        </a>
+        {% endfor %}
+    </div>
+{% endblock %}
