@@ -39,8 +39,7 @@ class InstagramTagsView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         blocked = Media.objects.filter(allowed=False).values_list('media_id', flat=True)
-        media = [m for m in cache.get('INSTAGRAM_TAGS_STREAM')
-                    if m.id not in blocked]
+        media = [m for m in cache.get('INSTAGRAM_TAGS_STREAM', []) if m.id not in blocked]
         return {"media": media, "blocked_media": blocked}
 
 
