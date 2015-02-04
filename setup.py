@@ -32,7 +32,7 @@ setup(
         'django-braces',
     ],
     extras_require={
-        'dev': ['check-manifest'],
+        'dev': ['check-manifest', 'ipdb', 'ipython'],
         'test': ['coverage'],
     },
     package_data={

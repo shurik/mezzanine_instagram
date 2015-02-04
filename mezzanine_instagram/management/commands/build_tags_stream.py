@@ -13,8 +13,8 @@ class Command(BaseCommand):
         settings.use_editable()
         api = InstagramAPI(
             client_id=settings.INSTAGRAM_CLIENT_ID,
-            client_secret=settings.INSTAGRAM_CLIENT_SECRET)
-
+            client_secret=settings.INSTAGRAM_CLIENT_SECRET
+        )
         # use dict to remove duplicates from list
         data = {}
         tags = Tag.objects.values_list('tag', flat=True)

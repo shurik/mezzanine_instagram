@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.template import Library
 from instagram.client import InstagramAPI
 from mezzanine.conf import settings
-from mezzanine.instagram.models import Instagram
+from mezzanine_instagram.models import Instagram
 
 register = Library()
 
