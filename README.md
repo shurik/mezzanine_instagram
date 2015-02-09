@@ -35,7 +35,7 @@ urlpatterns = patterns(
 )
 ```
 
-Access your Django admin, settings and enter Instagram client id, secret and username, save. Access Django admin, click `Authorize Instagram`.
+Configure `INSTAGRAM_CLIENT_ID` and `INSTAGRAM_CLIENT_SECRET` environment variables. Access Django admin, click `Authorize Instagram`.
 
 Once you've authorized your site you'll be able to access `/instagram/` in your browser to view the feed for the authorized user.
 
