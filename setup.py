@@ -1,34 +1,46 @@
 from setuptools import setup, find_packages
-import os
+from codecs import open
+from os import path
 
-version = '0.6'
+here = path.abspath(path.dirname(__file__))
 
-setup(name='Mezzanine_Instagram',
-      version=version,
-      description="A simple Instagram app for Mezzanine/Django",
-      long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
-      classifiers=[
-        "Programming Language :: Python",
-        "Topic :: Software Development :: Libraries :: Python Modules",
+with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
+setup(
+    name='mezzanine_instagram',
+    version='v0.0.1.dev1',
+    description='Django app that integrates Mezzanine CMS with Instagram',
+    long_description=long_description,
+    url='https://github.com/shurik/mezzanine_instagram',
+    author='Sasha Vladimirskiy',
+    author_email='sasha@butchershop.co',
+    license='MIT',
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'Topic :: Internet :: WWW/HTTP :: Site Management',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 2.7',
+    ],
+    keywords='django mezzanine cms instagram',
+    packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
+    install_requires=[
+        'setuptools',
+        'Mezzanine==3.1.10',
+        'python-instagram',
+        'django-braces',
+    ],
+    extras_require={
+        'dev': ['check-manifest', 'ipdb', 'ipython'],
+        'test': ['coverage'],
+    },
+    package_data={
+        'sample': [],
+    },
+    data_files=[],
+    entry_points={
+        'console_scripts': [
         ],
-      keywords='',
-      author='Aleksandr Vladimirskiy',
-      author_email='aleksandr@butchershopcreative.com',
-      url='http://www.butchershopcreative.com/',
-      license='BSD',
-      packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['mezzanine'],
-      include_package_data=True,
-      zip_safe=False,
-      install_requires=[
-          'setuptools',
-          'python-instagram',
-          'django-braces',
-          # -*- Extra requirements: -*-
-      ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
-      )
+    },
+)
