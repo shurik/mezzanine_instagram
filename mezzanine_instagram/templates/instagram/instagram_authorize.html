@@ -1,8 +1,8 @@
 <div class="module" id="recent-actions-module">
   <h2>Instagram</h2>
   {% if instagram %}
-  <h3>Authorized<br><a target="_blank" href="{% url instagram %}">View {{ instagram.full_name }}</a></h3>
-  <p>(<a href="{% url instagram_delete %}">De-authorize</a>)</p>
+  <h3>Authorized<br><a target="_blank" href="{% url "instagram" %}">View {{ instagram.full_name }}</a></h3>
+  <p>(<a href="{% url "instagram_delete" %}">De-authorize</a>)</p>
   {% else %}
   <h3><a href="{{ authorize_url }}">Authorize Instagram</a></h3>
   {% endif %}

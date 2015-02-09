@@ -28,6 +28,10 @@
             padding-left:5px;
             margin-right:15px;
         }
+        .instagram-tags-stream a {
+          display: block;
+          float: left;
+        }
         .instagram-tags-stream a.allowed img {
             border:3px solid green;
         }
@@ -43,27 +47,27 @@
 {% block extrahead %}
     {{ block.super }}
     <script>
-        $(document).ready(function(){
-            $('.instagram-tags-stream a').on('click', function(){
-                var url = "{% url 'admin:instagram-toggle-media' %}";
-                var id = $(this).data('id');
-
+      ;(function($, window, undefined){
+        $(function(){
+          $('.instagram-tags-stream').on('click', 'a', function(e){
+            var url = "{% url 'admin:instagram-toggle-media' %}";
+            var id = $(this).data('id');
+            $('.instagram-tags-stream a[data-id='+id+']').removeClass('allowed');
+            $('.instagram-tags-stream a[data-id='+id+']').removeClass('blocked');
+            $('.instagram-tags-stream a[data-id='+id+']').addClass('processing');
+            $.post(url, {id: id}, function(result){
+              $('.instagram-tags-stream a[data-id='+id+']').removeClass('processing');
+              if(result == 'blocked') {
                 $('.instagram-tags-stream a[data-id='+id+']').removeClass('allowed');
+                $('.instagram-tags-stream a[data-id='+id+']').addClass('blocked');
+              } else {
                 $('.instagram-tags-stream a[data-id='+id+']').removeClass('blocked');
-                $('.instagram-tags-stream a[data-id='+id+']').addClass('processing');
-
-                $.post(url, {id: id}, function(result){
-                    $('.instagram-tags-stream a[data-id='+id+']').removeClass('processing');
-                    if(result == 'blocked') {
-                        $('.instagram-tags-stream a[data-id='+id+']').removeClass('allowed');
-                        $('.instagram-tags-stream a[data-id='+id+']').addClass('blocked');
-                    } else {
-                        $('.instagram-tags-stream a[data-id='+id+']').removeClass('blocked');
-                        $('.instagram-tags-stream a[data-id='+id+']').addClass('allowed');
-                    }
-                });
+                $('.instagram-tags-stream a[data-id='+id+']').addClass('allowed');
+              }
             });
+          });
         });
+      })(jQuery, window);
     </script>
 {% endblock %}
 
