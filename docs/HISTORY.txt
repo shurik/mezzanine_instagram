@@ -1,11 +1,9 @@
 Changelog
 =========
 
-0.1 - Unreleased
-----------------
+0.0.4 - AJAX View for use with a front-end template
+0.0.6 - Tweak requirement
+0.0.7 - Catch invalid Access Token
+0.0.8 - Implement media stream
 
-* Initial release
-
-0.4 - AJAX View for use with a front-end template
-0.6 - Tweak requirement
-0.7 - Catch invalid Access Token
+v0.0.1.dev2 - Rebuild as a conventional Python package
