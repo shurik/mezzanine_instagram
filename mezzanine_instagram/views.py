@@ -26,7 +26,7 @@ class InstagramView(TemplateView):
             api = InstagramAPI(access_token=instagram.access_token)
             try:
                 media, discard = api.user_recent_media(user_id=instagram.user_id, count=24)
-            except InstagramAPIError, e:
+            except InstagramAPIError as e:
                 logger.error(e)
                 return {"media": []}
             return {"media": media}

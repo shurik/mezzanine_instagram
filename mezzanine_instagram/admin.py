@@ -29,7 +29,7 @@ class MediaAdmin(admin.ModelAdmin):
             item = Media.objects.get(media_id=id)
             item.delete()
             return HttpResponse('allowed')
-        except Media.DoesNotExist, e:
+        except Media.DoesNotExist as e:
             Media.objects.create(media_id=id, allowed=False)
             return HttpResponse('blocked')
 
