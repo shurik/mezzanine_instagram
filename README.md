@@ -1,3 +1,5 @@
+[![Throughput Graph](https://graphs.waffle.io/shurik/mezzanine_instagram/throughput.svg)](https://waffle.io/shurik/mezzanine_instagram/metrics)
+
 ## Installation
 
 In `virtualenv`:
