@@ -1,5 +1,3 @@
-[![Throughput Graph](https://graphs.waffle.io/shurik/mezzanine_instagram/throughput.svg)](https://waffle.io/shurik/mezzanine_instagram/metrics)
-
 ## Installation
 
 In `virtualenv`:
@@ -27,12 +25,12 @@ INSTAGRAM_CLIENT_ID = os.getenv('INSTAGRAM_CLIENT_ID')
 INSTAGRAM_CLIENT_SECRET = os.getenv('INSTAGRAM_CLIENT_SECRET')
 ```
 
-In `urls.py`:
+Add in `urls.py` before Mezzanine's own catch-all pattern:
 
 ```
 urlpatterns = patterns(
     '',
-    ("^instagram/", include("mezzanine_instagram.urls")),
+    url("^instagram/", include("mezzanine_instagram.urls")),
     ...
 )
 ```

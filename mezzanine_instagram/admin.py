@@ -14,9 +14,10 @@ class MediaAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         urls = super(MediaAdmin, self).get_urls()
-        my_urls = patterns('',
+        my_urls = patterns(
+            '',
             url(r'^add/$', self.redirect_to_instagram_view),
-            url(r'^toggle-media/$', self.admin_site.admin_view(self.toggle_media), name='instagram-toggle-media'),
+            url(r'^toggle-media/$', self.admin_site.admin_view(self.toggle_media), name='instagram-toggle-media')
         )
         return my_urls + urls
 
@@ -24,14 +25,17 @@ class MediaAdmin(admin.ModelAdmin):
         return HttpResponseRedirect(reverse('admin:instagram_media_changelist'))
 
     def toggle_media(self, request):
-        id = request.REQUEST.get('id')
+        id = request.POST.get('id')
         try:
             item = Media.objects.get(media_id=id)
-            item.delete()
-            return HttpResponse('allowed')
-        except Media.DoesNotExist as e:
-            Media.objects.create(media_id=id, allowed=False)
-            return HttpResponse('blocked')
+            item.allowed = not item.allowed
+            item.save()
+            if item.allowed:
+                return HttpResponse('allowed')
+            else:
+                return HttpResponse('blocked')
+        except Media.DoesNotExist:
+            return HttpResponse()
 
     @method_decorator(ensure_csrf_cookie)
     def changelist_view(self, request, extra_context=None):

@@ -9,7 +9,7 @@ with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
 
 setup(
     name='mezzanine_instagram',
-    version='v0.0.1.dev1',
+    version='v0.0.2',
     description='Django app that integrates Mezzanine CMS with Instagram',
     long_description=long_description,
     url='https://github.com/shurik/mezzanine_instagram',
@@ -27,7 +27,7 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     install_requires=[
         'setuptools',
-        'Mezzanine==3.1.10',
+        'Mezzanine==4.1.0',
         'python-instagram',
         'django-braces',
     ],

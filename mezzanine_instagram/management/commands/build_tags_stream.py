@@ -5,7 +5,7 @@ from django.core.cache import cache
 from instagram.client import InstagramAPI
 from mezzanine.conf import settings
 
-from mezzanine_instagram.models import Tag
+from mezzanine_instagram.models import Tag, Media
 
 logger = logging.getLogger(__name__)
 
@@ -30,8 +30,9 @@ class Command(BaseCommand):
                 for item in items:
                     data[item.id] = item
                     logger.debug(item)
+                    Media.objects.get_or_create(media_id=item.id, defaults={'allowed': False})
 
         # sort by date tagged
         data = data.values()
         final_items = sorted(data, key=lambda k: k.created_time, reverse=True)
-        cache.set('INSTAGRAM_TAGS_STREAM', final_items, 60*60)
+        cache.set('INSTAGRAM_TAGS_STREAM', final_items, 60 * 60)
